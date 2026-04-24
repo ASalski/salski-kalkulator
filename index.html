@@ -509,6 +509,21 @@ input[type="range"] {
 
 <script>
 
+if(sessionStorage.getItem('sc')==='1'){document.getElementById('ls').style.display='none';}
+document.addEventListener('DOMContentLoaded',function(){var i=document.getElementById('pwi');if(i)i.addEventListener('keydown',function(e){if(e.key==='Enter')chk();});});
+async function chk(){
+  var p=document.getElementById('pwi').value;
+  var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p));
+  var h=Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0');}).join('');
+  if(h==='c625dba995a2b48c3635bbe3a0a305cb9442380d9cdad02cec0072a85aa7162f'){
+    sessionStorage.setItem('sc','1');
+    document.getElementById('ls').style.display='none';
+  } else {
+    document.getElementById('pwe').textContent='Nieprawidłowe hasło';
+    document.getElementById('pwi').value='';
+  }
+}
+
 
 
 
@@ -1799,5 +1814,17 @@ calc();
 <div id="pdf-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#f0f0f0; z-index:9999; flex-direction:column;">
   <iframe id="pdf-iframe" style="flex:1; border:none; width:100%; height:100%;"></iframe>
 </div>
+<style>
+#ls{position:fixed;top:0;left:0;width:100%;height:100%;background:#faf9f5;z-index:99999;display:flex;align-items:center;justify-content:center;}
+.lb{background:#fff;border:1px solid #e4e1d8;border-radius:12px;padding:40px 36px;width:320px;text-align:center;}
+.lo{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#1a1a1a;margin-bottom:6px;}
+.su{font-size:11px;color:#aaa;margin-bottom:28px;}
+.lb input{width:100%;padding:10px 12px;border:1px solid #e4e1d8;border-radius:8px;font-family:inherit;font-size:14px;text-align:center;letter-spacing:2px;margin-bottom:12px;outline:none;box-sizing:border-box;}
+.lb input:focus{border-color:#1a1a1a;}
+.lb button{width:100%;padding:10px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;}
+.lb button:hover{opacity:.85;}
+.le{font-size:11px;color:#e6001f;margin-top:8px;min-height:16px;}
+</style>
+<div id="ls"><div class="lb"><div class="lo">Aleksander Salski</div><div class="su">Kalkulator wycen</div><input type="password" id="pwi" placeholder="Hasło" autocomplete="off"><button onclick="chk()">Wejdź</button><div class="le" id="pwe"></div></div></div>
 </body>
 </html>
