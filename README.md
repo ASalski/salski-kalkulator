@@ -1,0 +1,1 @@
+# salski-kalkulator
